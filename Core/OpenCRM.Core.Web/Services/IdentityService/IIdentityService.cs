@@ -12,6 +12,7 @@ namespace OpenCRM.Core.Web.Services.IdentityService
         Task<UserModel?> GetLoggedUser();
         DataSession? GetSession();
         Task<UserEntity?> GetUser(string userId);
+        Task<UserEntity?> GetUserByUsername(string username);
         Task Logout();
         Task<Tuple<IdentityResult, UserEntity>> RegisterUser(InputRegisterModel Input);
         Task Seed();

@@ -14,6 +14,8 @@ builder.Services.AddOpenCRMSwissLPD<OpenCRMDataContext>();
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 #region Globalization and Localization
 builder.Services.AddLocalization(options => { options.ResourcesPath = "Resources"; });
@@ -57,4 +59,9 @@ app.UseOpenCRM<OpenCRMDataContext>();
 app.UseOpenCRMSwissLPDAsync<OpenCRMDataContext>();
 app.MapRazorPages();
 app.MapControllers();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 app.Run();

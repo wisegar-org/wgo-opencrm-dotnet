@@ -63,7 +63,6 @@ namespace OpenCRM.Core.Web
                        .AddMicrosoftGraph(configuration.GetSection("DownstreamApi"))
                        .AddInMemoryTokenCaches();
 
-
             return services;
         }
         public static  IApplicationBuilder UseOpenCRM<TDBContext>(this IApplicationBuilder app) where TDBContext : DataContext

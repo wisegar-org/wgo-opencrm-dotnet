@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Microsoft.Graph;
 using Microsoft.Identity.Web;
 using OpenCRM.Core.Crypto;
 using OpenCRM.Core.Data;
@@ -196,7 +197,6 @@ namespace OpenCRM.Core.Web.Services.IdentityService
 
         public async Task Seed()
         {
-
             var existedAdminUser = await _userManager.FindByEmailAsync("info@opends.io");
             if (existedAdminUser != null) return;
 
@@ -232,6 +232,11 @@ namespace OpenCRM.Core.Web.Services.IdentityService
                     $"Ensure that '{nameof(UserEntity)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
+        }
+
+        public async Task<UserEntity?> GetUserByUsername(string username)
+        {
+            return await _userManager.FindByNameAsync(username);
         }
     }
 }

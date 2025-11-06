@@ -1,11 +1,10 @@
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.Extensions.FileProviders;
 using OpenCRM.Core.Web;
+using OpenCRM.Core.Web.Middlewares;
 using OpenCRM.SwissLPD;
 using OpenCRM.Web.Data;
-using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenCRM<OpenCRMDataContext>(builder.Configuration);
@@ -22,32 +21,34 @@ builder.Services.AddLocalization(options => { options.ResourcesPath = "Resources
 builder.Services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix).AddDataAnnotationsLocalization();
 #endregion
 
+
+
 var app = builder.Build();
 
+app.UseMiddleware<SpaMiddleware>();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+app.UseForwardedHeaders(new ForwardedHeadersOptions  { ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto });
 
-app.UseForwardedHeaders(new ForwardedHeadersOptions
-        {
-            ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-        });
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+    app.UseExceptionHandler("/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
 
-        if (!app.Environment.IsDevelopment())
-        {
-            app.UseHttpsRedirection();
-        }
-        //Configure the HTTP request pipeline.
-        //if (app.Environment.IsDevelopment())
-        //{
-        //    app.UseHttpsRedirection();
-        //    app.UseExceptionHandler("/Error");
-        //    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-        //    app.UseHsts();
-        //}
-        app.UseStaticFiles();
-        app.UseRouting();
-        app.UseAuthentication();
+app.UseStaticFiles();
+app.UseSpaMiddleware();
+app.UseRouting();
+app.UseAuthentication();
 
-       #region Globalization and Localization
+#region Globalization and Localization
 var supportedCultures = new[] { "en","fr"};
 var optionLocalization = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])
     .AddSupportedCultures(supportedCultures)

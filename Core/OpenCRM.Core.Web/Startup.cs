@@ -38,6 +38,10 @@ namespace OpenCRM.Core.Web
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<ICardBlockService, CardBlockService>();
             services.AddScoped<IUserSessionService, UserSessionService>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpa", policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
+            });
             services.AddAntiforgery(options =>
             {
                 options.Cookie.Name = "OpenCRM.Antiforgery.Token";
@@ -71,6 +75,9 @@ namespace OpenCRM.Core.Web
             {
                 throw new ArgumentNullException(nameof(app));
             }
+
+            app.UseCors("AllowSpa");
+
             app.UseAuthentication();
 
             app.UseAuthorization();

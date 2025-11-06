@@ -17,8 +17,6 @@ namespace OpenCRM.Core.Web.Middlewares
 
         public static IApplicationBuilder UseSpaMiddleware(this IApplicationBuilder app)
         {
-
-
             var spaPath = GetSpaPath();
             if (string.IsNullOrEmpty(spaPath) || !Directory.Exists(spaPath)) return app;
 

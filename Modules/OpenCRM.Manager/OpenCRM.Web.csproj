@@ -35,10 +35,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\OpenCRM.Core.Web\OpenCRM.Core.Web.csproj" />
-    <ProjectReference Include="..\Core\OpenCRM.Core\OpenCRM.Core.csproj" />
-    <ProjectReference Include="..\Modules\OpenCRM.Finance\OpenCRM.Finance.csproj" />
-    <ProjectReference Include="..\Modules\OpenCRM.SwissLPD\OpenCRM.SwissLPD.csproj" />
+    <ProjectReference Include="..\..\Core\OpenCRM.Core.Web\OpenCRM.Core.Web.csproj" />
+    <ProjectReference Include="..\..\Core\OpenCRM.Core\OpenCRM.Core.csproj" />
+    <ProjectReference Include="..\OpenCRM.Finance\OpenCRM.Finance.csproj" />
+    <ProjectReference Include="..\OpenCRM.SwissLPD\OpenCRM.SwissLPD.csproj" />
   </ItemGroup>
 
   <ItemGroup>

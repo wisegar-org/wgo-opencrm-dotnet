@@ -31,7 +31,7 @@
 - **OpenCRM.SwissLPD**: `EventService` (CRUD eventi via `DataBlockService`), `RoleService` (validazione utenti per CHE code leggendo `UserExtras` JSON), `Startup` registra servizi e chiama seed eventi (stub).
 - Entrambi i moduli espongono estensioni `AddOpenCRM*` e `UseOpenCRM*` per essere agganciati all’host.
 
-### Host web (`OpenCRM.Web`)
+### Host web (`OpenCRM.Web` in `Modules/OpenCRM.Manager`)
 - `Program.cs`: configura servizi `AddOpenCRM<OpenCRMDataContext>()` e modulo SwissLPD, Razor Pages + Controllers, localization (en/fr), forwarded headers, static files, auth, routing; chiama `UseOpenCRM` + `UseOpenCRMSwissLPDAsync`.
 - `OpenCRMDataContext`: DbContext concreto (connessione Npgsql di default se non configurata).
 - `Controllers/UserController`: endpoint API demo `GET /api/user`.
@@ -57,7 +57,7 @@
   - Uso di Bootstrap per componenti, separazione delle responsabilità tramite servizi.
 
 ## Come avviare
-- **Backend**: da `OpenCRM.Web`, impostare connection string `DBConnection` (Npgsql) in `appsettings.json`; `dotnet run` (crea DB e dati seed). Richiede SMTP configurato se si vuole inviare email.
+- **Backend**: da `Modules/OpenCRM.Manager`, impostare connection string `DBConnection` (Npgsql) in `appsettings.json`; `dotnet run` (crea DB e dati seed). Richiede SMTP configurato se si vuole inviare email.
 - **Front-end Angular**: `cd UI/OpenCRM.Backoffice && npm install && ng serve` (idem per `OpenCRM.Universal.Components`).
 
 ## Note e possibili punti di attenzione
@@ -67,4 +67,3 @@
 - `UserSessionService` non implementato; cookie custom `OpenCRM.Session` serializza `DataSession` in Base64.
 - `TranslationService.GetTranslationValue` usa lingua hardcoded \"En\".
 - Test limitati al servizio RSA; nessuna copertura per servizi web/moduli.
-

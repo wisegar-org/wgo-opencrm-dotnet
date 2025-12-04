@@ -8,7 +8,7 @@ The  open source cyphered content resources manager.
 
 ## Notes
 
-### OpenCRM.Web is a not needed head project
+### OpenCRM.Web (Modules/OpenCRM.Manager) is a not needed head project
 
 - The OpenCRM.Core.Web most contain all UI needed parts to be used on and extertal ASP Net Core Web project
 - The CoreLayout most be  available rto be used on any Core Razor Page

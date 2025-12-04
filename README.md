@@ -6,5 +6,5 @@ Il progetto pretende fungere da base a diversi moduli di gestione contenuti con 
 - Prerequisiti: dotnet SDK e Node.js/npm installati nel PATH.
 - Avvio standard: `powershell -ExecutionPolicy Bypass -File .\run-all.ps1`.
 - Avvio installando prima le dipendenze della SPA: `powershell -ExecutionPolicy Bypass -File .\run-all.ps1 -InstallDeps`.
-- La SPA viene avviata con `npm run dev` in `OpenCRM.Web\ui`, il backend con `dotnet run --project OpenCRM.Web\OpenCRM.Web.csproj`.
+- La SPA viene avviata con `npm run dev` in `Modules\OpenCRM.Manager\ui`, il backend con `dotnet run --project Modules\OpenCRM.Manager\OpenCRM.Web.csproj`.
 - Premi INVIO nella console per terminare entrambi i processi.

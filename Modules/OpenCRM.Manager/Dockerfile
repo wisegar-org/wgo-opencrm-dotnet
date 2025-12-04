@@ -7,10 +7,14 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["OpenCRM.Web/OpenCRM.Web.csproj", "OpenCRM.Web/"]
-RUN dotnet restore "OpenCRM.Web/OpenCRM.Web.csproj"
+COPY ["Modules/OpenCRM.Manager/OpenCRM.Web.csproj", "Modules/OpenCRM.Manager/"]
+COPY ["Core/OpenCRM.Core.Web/OpenCRM.Core.Web.csproj", "Core/OpenCRM.Core.Web/"]
+COPY ["Core/OpenCRM.Core/OpenCRM.Core.csproj", "Core/OpenCRM.Core/"]
+COPY ["Modules/OpenCRM.Finance/OpenCRM.Finance.csproj", "Modules/OpenCRM.Finance/"]
+COPY ["Modules/OpenCRM.SwissLPD/OpenCRM.SwissLPD.csproj", "Modules/OpenCRM.SwissLPD/"]
+RUN dotnet restore "Modules/OpenCRM.Manager/OpenCRM.Web.csproj"
 COPY . .
-WORKDIR "/src/OpenCRM.Web"
+WORKDIR "/src/Modules/OpenCRM.Manager"
 RUN dotnet build "OpenCRM.Web.csproj" -c Release -o /app/build
 
 FROM build AS publish

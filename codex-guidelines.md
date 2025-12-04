@@ -20,7 +20,7 @@
 
 ## Linee guida specifiche per questo repo
 - Progetto web: `Modules/OpenCRM.Manager` (csproj `OpenCRM.Manager.csproj`). Aggiorna sempre percorsi relativi se sposti file nel modulo.
-- SPA Quasar: `Modules/OpenCRM.Manager/ui`. Usa `npm run dev` in sviluppo; evita di committare `node_modules`.
+ - SPA Quasar: `Modules/OpenCRM.Manager/client`. Usa `npm run dev` in sviluppo; evita di committare `node_modules`.
 - Script di avvio: `run-all.ps1` lancia backend e SPA. Se modifichi porte o argomenti, aggiorna README e lo script insieme.
 - Docker: `Modules/OpenCRM.Manager/Dockerfile` copia anche i progetti core/moduli. Mantieni percorsi coerenti con la soluzione.
 - Config: `appsettings*.json` e `launchSettings.json` sono versionati nel modulo; se aggiungi nuove chiavi documentale in README/Docs.

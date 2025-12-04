@@ -6,7 +6,7 @@
 $ErrorActionPreference = 'Stop'
 
 $root = $PSScriptRoot
-$backendProj = Join-Path $root 'Modules\OpenCRM.Manager\OpenCRM.Web.csproj'
+$backendProj = Join-Path $root 'Modules\OpenCRM.Manager\OpenCRM.Manager.csproj'
 $uiDir = Join-Path $root 'Modules\OpenCRM.Manager\ui'
 
 $dotnetExe = (Get-Command dotnet -ErrorAction SilentlyContinue)

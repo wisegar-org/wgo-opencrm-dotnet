@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenCRM.Core.Test", "Core\O
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenCRM.Core.Web", "Core\OpenCRM.Core.Web\OpenCRM.Core.Web.csproj", "{CAF1444C-2D3C-4234-994E-A7271CB3FD51}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenCRM.Web", "Modules\OpenCRM.Manager\OpenCRM.Web.csproj", "{6312D8E0-BB44-4A2F-B193-BE0D3D16F5A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenCRM.Web", "Modules\OpenCRM.Manager\OpenCRM.Manager.csproj", "{6312D8E0-BB44-4A2F-B193-BE0D3D16F5A3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject

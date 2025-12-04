@@ -46,7 +46,7 @@ elseif (-not (Test-Path (Join-Path $uiDir 'node_modules'))) {
 }
 
 Write-Host 'Avvio backend ASP.NET Core...' -ForegroundColor Cyan
-$backend = Start-Process -FilePath $dotnetExe.Source -ArgumentList @('run','--project', $backendProj) -WorkingDirectory $root -PassThru -WindowStyle Normal
+$backend = Start-Process -FilePath $dotnetExe.Source -ArgumentList @('run','--project', $backendProj, '--configuration', 'Debug') -WorkingDirectory $root -PassThru -WindowStyle Normal
 
 Write-Host 'Avvio SPA Quasar (npm run dev)...' -ForegroundColor Cyan
 $frontend = Start-Process -FilePath $npmCmd.Source -ArgumentList @('run','dev') -WorkingDirectory $uiDir -PassThru -WindowStyle Normal

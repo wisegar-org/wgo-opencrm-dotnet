@@ -11,10 +11,11 @@
 3. Gli adapter di persistence devono vivere in `/Infrastructure/Persistence`.
 4. Le interfacce devono essere definite nel livello Application.
 5. Ogni nuovo file deve seguire la naming convention: `{Nome}Service.cs`, `{Nome}Repository.cs`,`{Nome}Entity.cs`.
+6. Mantieni aggiornati i dto in typescript nei client con quello delle web api di ogni modulo.
 
 ## Esempio di struttura di cartelle
-- /Code
-- /Code/{Nome}
+- /Core
+- /Core/{Nome}
 - /Modules
 - /Modules/{Nome}
 

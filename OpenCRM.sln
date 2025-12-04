@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34202.233
@@ -27,13 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenCRM.Core.Test", "Core\O
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenCRM.Core.Web", "Core\OpenCRM.Core.Web\OpenCRM.Core.Web.csproj", "{CAF1444C-2D3C-4234-994E-A7271CB3FD51}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenCRM.Web", "Modules\OpenCRM.Manager\OpenCRM.Manager.csproj", "{6312D8E0-BB44-4A2F-B193-BE0D3D16F5A3}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "OpenCRM.Setup", "OpenCRM.Setup\OpenCRM.Setup.vbproj", "{3BFDF6A2-7A32-4CEA-8CF8-6A76687A63A3}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{04BFBD7B-69AC-4EB8-ACD5-F08086637CA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenCRM.Manager", "Modules\OpenCRM.Manager\OpenCRM.Manager.csproj", "{6312D8E0-BB44-4A2F-B193-BE0D3D16F5A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,25 +59,20 @@ Global
 		{6312D8E0-BB44-4A2F-B193-BE0D3D16F5A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6312D8E0-BB44-4A2F-B193-BE0D3D16F5A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6312D8E0-BB44-4A2F-B193-BE0D3D16F5A3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3BFDF6A2-7A32-4CEA-8CF8-6A76687A63A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3BFDF6A2-7A32-4CEA-8CF8-6A76687A63A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3BFDF6A2-7A32-4CEA-8CF8-6A76687A63A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3BFDF6A2-7A32-4CEA-8CF8-6A76687A63A3}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
+EndGlobalSection
+GlobalSection(SolutionProperties) = preSolution
+	HideSolutionNode = FALSE
+EndGlobalSection
+GlobalSection(NestedProjects) = preSolution
 		{008BD92C-0E44-429B-A409-9CC017E35058} = {AC0CF4BF-CF7F-489E-A05F-1E884730C909}
 		{784BF82F-A803-4AA2-A3C4-BEEF69392165} = {C542CA25-BF9C-4AA8-A4EE-5217621EB63B}
 		{9F8485A9-B1FE-4E20-8D51-252120610C32} = {C542CA25-BF9C-4AA8-A4EE-5217621EB63B}
 		{E54321FF-A032-4549-B76D-329CD45049E3} = {AC0CF4BF-CF7F-489E-A05F-1E884730C909}
 		{3A563FF1-A178-44ED-9F26-F0C8ECE99C9F} = {AC0CF4BF-CF7F-489E-A05F-1E884730C909}
 		{CAF1444C-2D3C-4234-994E-A7271CB3FD51} = {AC0CF4BF-CF7F-489E-A05F-1E884730C909}
-		{3BFDF6A2-7A32-4CEA-8CF8-6A76687A63A3} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{6312D8E0-BB44-4A2F-B193-BE0D3D16F5A3} = {C542CA25-BF9C-4AA8-A4EE-5217621EB63B}
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {3CE3E16D-DB9A-4580-9FD7-D9BFC2CDD0C6}
-	EndGlobalSection
+EndGlobalSection
+GlobalSection(ExtensibilityGlobals) = postSolution
+	SolutionGuid = {3CE3E16D-DB9A-4580-9FD7-D9BFC2CDD0C6}
+EndGlobalSection
 EndGlobal

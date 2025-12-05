@@ -3,30 +3,27 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthApiService } from '../services/auth-api.service';
-import { AuthStore } from '../services/auth-store.service';
-import { LoginRequest } from '../models/auth/login-request';
+import { RegisterRequest } from '../models/auth/register-request';
 
 @Component({
-  selector: 'app-login-page',
+  selector: 'app-register-page',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
-  templateUrl: './login.page.html',
-  styleUrls: ['./login.page.css'],
+  templateUrl: './register.page.html',
+  styleUrls: ['./register.page.css'],
 })
-export class LoginPage {
+export class RegisterPage {
   readonly form: FormGroup;
   statusMessage = '';
   loading = false;
 
-  constructor(
-    formBuilder: FormBuilder,
-    private readonly authApi: AuthApiService,
-    private readonly authStore: AuthStore
-  ) {
-    this.form = formBuilder.group({
+  constructor(private readonly formBuilder: FormBuilder, private readonly authApi: AuthApiService) {
+    this.form = this.formBuilder.group({
+      name: [''],
+      lastname: [''],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
-      rememberMe: [false],
+      confirmPassword: ['', [Validators.required]],
     });
   }
 
@@ -36,28 +33,21 @@ export class LoginPage {
       return;
     }
 
-    const request: LoginRequest = this.form.value;
+    const request: RegisterRequest = this.form.value;
     this.loading = true;
-    this.statusMessage = 'Accesso in corso...';
+    this.statusMessage = 'Registrazione in corso...';
 
-    this.authApi.login(request).subscribe({
+    this.authApi.register(request).subscribe({
       next: (response) => {
         if (response.success) {
-          this.authStore.setUser({
-            userId: response.userId ?? '',
-            email: response.email ?? request.email,
-            emailConfirmed: response.emailConfirmed,
-          });
-          this.statusMessage = response.message || 'Accesso riuscito.';
+          this.statusMessage = response.message || 'Registrazione completata. Controlla la tua email.';
         } else {
-          const error = response.errors?.[0] ?? 'Accesso non riuscito.';
-          this.authStore.clear();
+          const error = response.errors?.[0] ?? 'Registrazione non riuscita.';
           this.statusMessage = response.message || error;
         }
       },
       error: () => {
-        this.authStore.clear();
-        this.statusMessage = 'Errore durante il login.';
+        this.statusMessage = 'Errore durante la registrazione.';
       },
       complete: () => {
         this.loading = false;
@@ -71,5 +61,9 @@ export class LoginPage {
 
   get passwordControl() {
     return this.form.get('password');
+  }
+
+  get confirmPasswordControl() {
+    return this.form.get('confirmPassword');
   }
 }

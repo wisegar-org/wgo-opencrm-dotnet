@@ -5,16 +5,16 @@ Queste linee guida istruiscono Codex su come operare nel repository OpenCRM. La 
 ---
 
 ## 1. Struttura del repository (immutabile)
-- Radice: OpenCRM.sln, run-manager.ps1, README.md, codex-guidelines.md, .dockerignore, .gitignore.
-- .github/workflows/: development_opencrm-web.yml, opencrm-web.yml.
+
+- Radice: OpenCRM.sln, *.ps1 (scripts di esecuzione a build e publish), README.md, codex-guidelines.md, .dockerignore, Dockerfile, Jenkinsfile, .gitignore.
 - Docs/: OpenCRM.md, ProjectOverview.md, Files/OpenCRM_Architecture_Diagram.png.
 - Core/
   - OpenCRM.Core/: Entities/, Extensions/, Models/, Services/, bin/, obj/, OpenCRM.Core.csproj.
-  - OpenCRM.Core.Web/: Areas/, Client/, Components/, Extensions/, Models/, Pages/, Services/, wwwroot/, bin/, obj/, ExampleJsInterop.cs, Startup.cs, OpenCRM.Core.Web.csproj. Contiene inoltre un progetto spa vue  nella cartella client. Questo quando compila deve sempre finire dentro la cartella ui che deve esserre servita come file statics da un middleware nel indirizzo "/ui". Devi configurare la spa e le api di conseguenza.
+  - OpenCRM.Core.Web/: Client/, Extensions/, Models/, Pages/, Services/, wwwroot/, bin/, obj/, Startup.cs, OpenCRM.Core.Web.csproj. Contiene inoltre un progetto spa angular con la libreria componenti flowbite.com (tailwin)  nella cartella client. Questo quando compila deve sempre finire dentro la cartella ui che deve esserre servita come file statics da un middleware nel indirizzo "/ui". Devi configurare la spa e le api di conseguenza.
   - OpenCRM.Core.Test/: Services/, bin/, obj/, GlobalUsings.cs, OpenCRM.Core.Test.csproj.
 - Modules/
   - OpenCRM.Manager/: Controllers/, Data/, DTO/, Pages/, Resources/, wwwroot/, Properties/, bin/, obj/, OpenCRM.Manager.csproj, Program.cs, appsettings.json, appsettings.Development.json, Dockerfile.
-    - Client/ (SPA Quasar): src/, public/, .quasar/, node_modules/, quasar.config.ts, eslint.config.js, package.json, package-lock.json, tsconfig.json, postcss.config.js, .prettierrc.json, .npmrc, index.html.
+    - Client/ (spa angular con libreria componenti flowbite.com)
   - OpenCRM.Finance/: Areas/, Services/, bin/, obj/, Startup.cs, OpenCRM.Finance.csproj.
   - OpenCRM.SwissLPD/: Areas/, Services/, bin/, obj/, Startup.cs, OpenCRM.SwissLPD.csproj.
 
@@ -23,7 +23,8 @@ Mantieni sempre questa struttura: non spostare, rinominare o eliminare cartelle 
 ---
 
 ## 2. Architettura e dipendenze
-- Librerie core: OpenCRM.Core per entita, servizi di base e modelli condivisi; OpenCRM.Core.Web per integrazione ASP.NET Core (startup, middleware, client shared).
+
+- Librerie Core di cuo dipendono: OpenCRM.Core per entita, servizi di base e modelli condivisi; OpenCRM.Core.Web per integrazione ASP.NET Core (startup, middleware, client shared).
 - Moduli backend: OpenCRM.Manager, OpenCRM.Finance, OpenCRM.SwissLPD dipendono da Core/Core.Web e non il contrario.
 - SPA: vive in Modules/OpenCRM.Manager/Client e consuma le API esposte dai moduli backend.
 - Ogni progetto Angular deve utilizzare la libreria di componenti Flowbite per l'UI; assicurati che sia installata e importata in ciascun progetto.
@@ -32,6 +33,7 @@ Mantieni sempre questa struttura: non spostare, rinominare o eliminare cartelle 
 ---
 
 ## 3. Regole per generare codice backend (ASP.NET Core)
+
 - DbContext: quando serve estendere, partire dal DbContext base di OpenCRM.Core.
 - Controller: collocarli nel modulo backend corretto (es. Modules/OpenCRM.Manager/Controllers); esporre solo DTO e non entita EF.
 - Servizi applicativi: nei rispettivi moduli (es. Modules/OpenCRM.Manager/Data o Services) e registrati in DI con metodi dedicati.
@@ -39,31 +41,42 @@ Mantieni sempre questa struttura: non spostare, rinominare o eliminare cartelle 
 
 ---
 
-## 4. Regole per generare codice frontend (SPA Quasar + TypeScript)
+## 4. Regole per generare codice frontend (SPA Angular, TypeScript + Flowbite)
+
 - Ogni progetto Asp Net Core e il progetto OpenCRM.Core.Web ha in progetto spa dentro una cartella Client. Ogni uno di questi progetti deve servire il compilato del progetto spa come StaticsFiles
-- Organizzare nuove feature dentro src usando pages/components/services/store coerenti con Axios, Pinia.
+- Organizzare nuove feature dentro src usando pages/components/services/store coerenti con la metodologia standard di angular.
 - Tutte le chiamate HTTP passano da un httpClient centralizzato.
-- File *.api.ts per le chiamate REST; logica di business nei file *.service.ts dentro la cartella services e file *.store.ts per gli store dentro la cartella store. I componenti come file *.component.ts e *.component.vue dentro la cartella components con la struttura {name}.
+- File  {name}.api.ts per le chiamate REST; logica di business nei file {name}.service.ts dentro la cartella services e file {name}.store.ts per gli store dentro la cartella store. I componenti come file {name}.component.ts e {name}.component.vue dentro la cartella components con la struttura {name}.
 
 ---
 
 ## 5. Convenzioni di stile
+
 - Backend C#: PascalCase per classi/metodi/proprieta pubbliche; servizi con suffisso Service; handler async/await.
 - Frontend TS: camelCase per variabili/funzioni; tipi/interfacce in PascalCase; componenti senza logica di business.
 
 ---
 
 ## 6. Istruzioni generali per Codex
+
 - Rispettare sempre la struttura immutabile del repository.
 - Usare i servizi ed entita di Core quando esistono.
 - Non duplicare funzioni gia presenti in OpenCRM.Core/Core.Web.
 - Separare dominio, applicazione, infrastruttura e API nei moduli backend; evitare dipendenze circolari.
 - Per il frontend generare solo codice Quasar/TypeScript coerente con la struttura esistente.
 - Per nuovi moduli, creare cartelle simmetriche lato backend e frontend (se previsto) seguendo i nomi gia in uso.
+- Nei progetti ASP NET Core mantenere la struttura:
+
+  - Cartella Services deve contenere solo i servizi con il naming {Name}Service.cs
+  - Cartella Models deve contenere solo i contratti, modelli e DTOs con il naming {Name}{Request/Response}Model.cs
+  - Dove possibile generalizza in una classe astratta o normale.
+  - Cartella Entities deve contenere solo i classi che sono delle entità di entity framework  con il naming {Name}Entity.cs
+  - Cartella Extensions deve contenere solo i classi che sono delle estensioni statiche di un tipo si cassi con il naming {Name}Extensions.cs
 
 ---
 
 ## 7. Output atteso da Codex
+
 - Codice coerente con l'architettura e la struttura fissa.
 - Indicazioni precise su dove posizionare file e classi.
 - Snippet di integrazione con OpenCRM.Core/Core.Web quando necessari.
@@ -72,6 +85,7 @@ Mantieni sempre questa struttura: non spostare, rinominare o eliminare cartelle 
 ---
 
 ## 8. Cosa Codex non deve fare
+
 - Non introdurre librerie non richieste.
 - Non ignorare i servizi base di OpenCRM.Core/Core.Web.
 - Non accoppiare direttamente API e Infrastructure bypassando Application nei moduli.
@@ -80,4 +94,5 @@ Mantieni sempre questa struttura: non spostare, rinominare o eliminare cartelle 
 ---
 
 ## 9. Obiettivo finale
+
 Garantire una base OpenCRM ordinata, coerente e mantenibile, facilitando la migrazione e l'evoluzione dei moduli senza rompere la struttura del repository.

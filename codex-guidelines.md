@@ -29,6 +29,7 @@ Mantieni sempre questa struttura: non spostare, rinominare o eliminare cartelle 
 - SPA: vive in Modules/OpenCRM.Manager/Client e consuma le API esposte dai moduli backend.
 - Ogni progetto Angular deve utilizzare la libreria di componenti Flowbite per l'UI; assicurati che sia installata e importata in ciascun progetto.
 - Nessuna dipendenza circolare; i moduli non devono referenziare altri moduli se non tramite API.
+- Tutte le app angular devono implementare un unico ApiService base su cui si devono apoggiare tutti i servizi che implementono le chiamate al backend.
 
 ---
 

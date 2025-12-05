@@ -10,7 +10,7 @@ Queste linee guida istruiscono Codex su come operare nel repository OpenCRM. La 
 - Docs/: OpenCRM.md, ProjectOverview.md, Files/OpenCRM_Architecture_Diagram.png.
 - Core/
   - OpenCRM.Core/: Entities/, Extensions/, Models/, Services/, bin/, obj/, OpenCRM.Core.csproj.
-  - OpenCRM.Core.Web/: Areas/, Client/, Components/, Extensions/, Models/, Pages/, Services/, wwwroot/, bin/, obj/, ExampleJsInterop.cs, Startup.cs, OpenCRM.Core.Web.csproj.
+  - OpenCRM.Core.Web/: Areas/, Client/, Components/, Extensions/, Models/, Pages/, Services/, wwwroot/, bin/, obj/, ExampleJsInterop.cs, Startup.cs, OpenCRM.Core.Web.csproj. Contiene inoltre un progetto spa vue  nella cartella client. Questo quando compila deve sempre finire dentro la cartella ui che deve esserre servita come file statics da un middleware nel indirizzo "/ui". Devi configurare la spa e le api di conseguenza.
   - OpenCRM.Core.Test/: Services/, bin/, obj/, GlobalUsings.cs, OpenCRM.Core.Test.csproj.
 - Modules/
   - OpenCRM.Manager/: Controllers/, Data/, DTO/, Pages/, Resources/, wwwroot/, Properties/, bin/, obj/, OpenCRM.Manager.csproj, Program.cs, appsettings.json, appsettings.Development.json, Dockerfile.

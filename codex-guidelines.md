@@ -1,39 +1,171 @@
-# Linee guida per Copilot / Codex
+# Codex Guidelines – Progetto X
 
-## Architettura generale
-- Pattern: Clean Architecture (Domain, Application, Infrastructure, Presentation)
-- Linguaggio: C#, Typescript
-- Repo: progetto modulare, indipendenza dalle librerie esterne.
+Queste linee guida servono per istruire Codex su come generare, modificare o proporre codice per il Progetto X.  
+Il progetto consiste nella migrazione di un'applicazione desktop verso un’architettura web basata su ASP.NET Core (API) e una SPA Quasar/TypeScript.
 
-## Regole che Copilot deve seguire
-1. Nessuna dipendenza dal livello Infrastructure dentro Domain o Application.
-2. Gli entity devono essere anemici ma con metodi di dominio.
-3. Gli adapter di persistence devono vivere in `/Infrastructure/Persistence`.
-4. Le interfacce devono essere definite nel livello Application.
-5. Ogni nuovo file deve seguire la naming convention: `{Nome}Service.cs`, `{Nome}Repository.cs`,`{Nome}Entity.cs`.
-6. Mantieni aggiornati i dto in typescript nei client con quello delle web api di ogni modulo.
+---
 
-## Esempio di struttura di cartelle
-- /Core
-- /Core/{Nome}
-- /Modules
-- /Modules/{Nome}
+## 1. Architettura generale del progetto
 
-## Linee guida specifiche per questo repo
-- Progetto web: `Modules/OpenCRM.Manager` (csproj `OpenCRM.Manager.csproj`). Aggiorna sempre percorsi relativi se sposti file nel modulo.
- - SPA Quasar: `Modules/OpenCRM.Manager/Client`. Usa `npm run dev` in sviluppo; evita di committare `node_modules`.
-- Script di avvio: `run-all.ps1` lancia backend e SPA. Se modifichi porte o argomenti, aggiorna README e lo script insieme.
-- Docker: `Modules/OpenCRM.Manager/Dockerfile` copia anche i progetti core/moduli. Mantieni percorsi coerenti con la soluzione.
-- Config: `appsettings*.json` e `launchSettings.json` sono versionati nel modulo; se aggiungi nuove chiavi documentale in README/Docs.
+Il backend è strutturato in moduli indipendenti che dipendono da due librerie fondamentali:
 
-## Principi Clean Architecture operativi
-- Boundary netti: Domain/Application non dipendono da ASP.NET, EF o UI; controller e UI traducono solo richieste/risposte verso i use case.
-- Use case espliciti: ogni operazione è un handler/comando in Application; dipende da porte (interfacce) definite lì e implementate in Infrastructure.
-- Modellazione dominio: entità con invarianti/metodi di dominio; non esporre entità EF verso API/UI, usa DTO/ViewModel dedicati.
-- Dipendenze invertite: repository/adapter in Infrastructure implementano interfacce in Application; registra le implementazioni via DI in Program.cs.
-- Separazione UI: la SPA usa solo API HTTP con DTO stabili/versionati; nessun riferimento a EF o servizi interni.
-- Config/IO: accessi a file/email/storage/API terze incapsulati in servizi Infrastructure; inietta via interfacce e opzioni tipizzate validate in startup.
-- Testabilità: handler/use case senza I/O diretto, dipendenze mockabili; copri i confini (EF/HTTP) con test di integrazione.
-- Modularità: moduli (Finance, SwissLPD, Manager) dipendono da Core/Application, non viceversa; accoppiamenti espliciti via interfacce/extension method di configurazione.
-- Migrazioni/seed: tieni migrazioni EF nel progetto host/infrastructure; seed minimale nei bootstrap, non nel dominio.
-- Logging/telemetria: log strutturato nei servizi applicativi/infrastructure, non nei domain model.
+- **OpenCRM.Core**
+  - Contiene il DataContext base di Entity Framework Core.
+  - Contiene entità base condivise:
+    - Utenti, Gruppi, Ruoli
+    - Logs
+    - Media/Allegati
+    - Linguaggi e Traduzioni
+    - Blocchi dati generici (DataBlock)
+  - Contiene servizi infrastrutturali:
+    - `UserSessionService`
+    - `RoleService`
+    - `MediaService`
+    - `LanguageService` / `TranslationService`
+    - `IdentityService`
+    - `DataBlockService`
+
+- **OpenCRM.Core.Web**
+  - Layer di integrazione per progetti ASP.NET Core.
+  - Fornisce setup automatico per:
+    - Identity e autorizzazioni
+    - Registrazione dei servizi base
+    - Inizializzazione del DataContext (versione base o estesa)
+    - Middleware comuni
+
+Tutti i moduli applicativi backend dipendono da queste librerie e mai viceversa.
+
+---
+
+## 2. Struttura del progetto
+
+Il progetto segue una divisione in livelli chiari:
+
+OpenCRM.Core
+OpenCRM.Core.Web
+
+ProgettoX.Domain // Entità di dominio e regole
+ProgettoX.Application // Use case, servizi applicativi, orchestrazione
+ProgettoX.Infrastructure // DbContext esteso, repository, integrazioni
+ProgettoX.Api // Controller API, DTO, Startup/Program
+
+
+### Regole Codex:
+
+- **Il dominio non può dipendere da Application o Infrastructure.**
+- **Application può dipendere da Domain e OpenCRM.Core.**
+- **Infrastructure può dipendere da Domain, Application e OpenCRM.Core/Web.**
+- **Api può dipendere da tutti gli altri livelli.**
+
+Codex deve rispettare sempre la separazione dei livelli e non creare dipendenze circolari.
+
+---
+
+## 3. Regole per generare codice backend (ASP.NET Core)
+
+### DbContext
+- Codex deve generare entità e configurazioni EF Core nel progetto `ProgettoX.Infrastructure`.
+- Le entità devono estendere quelle di `OpenCRM.Core` solo quando necessario.
+- Il `DbContext` del progetto deve estendere il DbContext di `OpenCRM.Core`.
+
+### Controller
+- Devono vivere in `ProgettoX.Api`.
+- Devono esporre solo DTO e mai entità EF direttamente.
+- Devono dipendere da servizi presenti in Application.
+
+### Servizi applicativi
+- Vanno nel progetto `ProgettoX.Application`.
+- Devono usare i servizi base di `OpenCRM.Core` quando disponibili.
+- Devono essere sempre registrati tramite metodo DI dedicato (es. `services.AddApplicationServices()`).
+
+### Utilizzo dei servizi Core
+Codex deve preferire sempre:
+- `IdentityService` per autenticazione/autorizzazione
+- `UserSessionService` per recuperare l’utente corrente
+- `MediaService` per upload e gestione file
+- `LanguageService` e `TranslationService` per i18n
+- `DataBlockService` per dati generici spesso cifrati
+
+Non scrivere logiche duplicate di questi componenti.
+
+---
+
+## 4. Regole per generare codice frontend (SPA Quasar + TypeScript)
+
+Struttura dei moduli:
+
+/src/modules/<modulo>/
+pages/
+components/
+services/<modulo>.api.ts
+store/<modulo>.store.ts
+
+
+Regole principali:
+
+- Tutte le chiamate HTTP devono passare da un `httpClient` centralizzato.
+- I file `*.api.ts` devono contenere funzioni che chiamano endpoint REST.
+- Lo state management deve essere implementato con Pinia.
+- Le traduzioni devono essere caricate dal backend tramite il TranslationService.
+- Gli upload devono utilizzare FormData e passare tramite gli endpoint gestiti da MediaService.
+
+---
+
+## 5. Convenzioni di stile
+
+### Backend (C#)
+- Naming PascalCase per classi, metodi pubblici, proprietà.
+- I servizi devono avere nome `<Something>Service`.
+- Gli handler devono essere asincroni (`async/await`).
+
+### Frontend (TypeScript)
+- Naming camelCase per variabili e funzioni.
+- Tipi e interfacce in PascalCase.
+- Nessuna logica di business nel componente: deve stare nei service o store.
+
+---
+
+## 6. Istruzioni generali per Codex
+
+Quando generi codice o suggerisci modifiche, devi:
+
+1. **Rispettare la struttura architetturale stabilita.**
+2. **Usare sempre i servizi e le entità del Core quando disponibili.**
+3. **Non duplicare funzioni già esistenti in OpenCRM.Core.**
+4. **Separare chiaramente dominio, applicazione, infrastruttura e API.**
+5. **Produrre codice tipico di una soluzione enterprise, pulito, documentato e consistente.**
+6. **Per il frontend generare solo codice Quasar/TypeScript coerente con la struttura modules.**
+7. **Per ogni nuovo modulo, creare cartelle simmetriche lato backend e frontend.**
+
+---
+
+## 7. Output atteso da Codex
+
+Quando Codex risponde deve produrre:
+
+- codice coerente con l’architettura
+- suggerimenti specifici su dove posizionare file e classi
+- eventuali snippet di integrazione con OpenCRM.Core/Web
+- una breve spiegazione delle scelte architetturali
+
+---
+
+## 8. Cosa Codex non deve fare
+
+- Non deve introdurre librerie non richieste.
+- Non deve ignorare i servizi base di OpenCRM.Core.
+- Non deve accoppiare direttamente API → Infrastructure bypassando Application.
+- Non deve generare file in percorsi non previsti dalla struttura.
+
+---
+
+## 9. Obiettivo finale
+
+Le presenti linee guida servono a garantire:
+
+- una migrazione ordinata del vecchio sistema desktop,
+- una codebase pulita e organizzata,
+- la massima coerenza tra tutti i nuovi moduli,
+- un'architettura flessibile e futura e mantenibile a lungo termine.
+
+Codex deve lavorare sempre rispettando questi principi.

@@ -7,7 +7,7 @@ using OpenCRM.Core.Web.Models;
 
 namespace OpenCRM.Core.Web.Services
 {
-    public class MediaService<TDBContext> :  IMediaService where TDBContext : DataContext
+    public class MediaService<TDBContext> : IMediaService where TDBContext : DataContext
     {
         private readonly TDBContext dbContextClass;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -144,7 +144,7 @@ namespace OpenCRM.Core.Web.Services
 
                 var content = new System.IO.MemoryStream(file.FileData);
 
-                var webRootPath = OpenCRMEnv.GetWebRoot();
+                var webRootPath = EnvironmentExtensions.GetWebRoot();
                 if (!string.IsNullOrEmpty(webRootPath))
                 {
                     var path = Path.Combine(webRootPath, "media", file.FileName);
@@ -169,7 +169,7 @@ namespace OpenCRM.Core.Web.Services
 
         private static void StoreMediaToPublicFile(MediaEntity fileDetails)
         {
-            var webRootPath = OpenCRMEnv.GetWebRoot();
+            var webRootPath = EnvironmentExtensions.GetWebRoot();
 
             if (!string.IsNullOrEmpty(webRootPath))
             {

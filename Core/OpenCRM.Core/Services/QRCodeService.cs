@@ -3,12 +3,13 @@ using System.Drawing;
 
 namespace OpenCRM.Core.QRCode
 {
-    public class QRCodeService 
+    public class QRCodeService
     {
-        public static Bitmap GenerateQRCode(string qrText) {
+        public static Bitmap GenerateQRCode(string qrText)
+        {
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
             QRCodeData qrCodeData = qrGenerator.CreateQrCode(qrText, QRCodeGenerator.ECCLevel.Q);
-            
+
             QRCoder.QRCode qrCode = new QRCoder.QRCode(qrCodeData);
             Bitmap qrCodeImage = qrCode.GetGraphic(20);
             return qrCodeImage;

@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace OpenCRM.Core.Extensions
 {
-    public static class OpenCRMEnv
+    public static class EnvironmentExtensions
     {
-        public static void SetWebRoot() {
+        public static void SetWebRoot()
+        {
             Environment.SetEnvironmentVariable("WEBROOT", Path.Combine(Environment.CurrentDirectory, "wwwroot"));
         }
         public static string GetWebRoot()

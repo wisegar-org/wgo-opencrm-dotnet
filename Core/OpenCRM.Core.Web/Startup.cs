@@ -23,7 +23,7 @@ namespace OpenCRM.Core.Web
     {
         public static IServiceCollection AddOpenCRM<TDBContext>(this IServiceCollection services, IConfiguration configuration) where TDBContext : DataContext
         {
-            OpenCRMEnv.SetWebRoot();
+            EnvironmentExtensions.SetWebRoot();
 
             //TODO: Register all module services here
             string connectionString = configuration.GetConnectionString("DBConnection") ?? throw new InvalidOperationException("OpenCRM DB Connection string 'DBConnection' not found.");
@@ -48,7 +48,7 @@ namespace OpenCRM.Core.Web
                 options.LoginPath = "/Identity/Login";
                 options.LogoutPath = "/Identity/Logout";
                 options.Cookie.Name = "OpenCRM.Identity.Token";
-                
+
             });
             services.AddAuthentication();
             services.Configure<IdentityOptions>(options =>
@@ -66,7 +66,7 @@ namespace OpenCRM.Core.Web
 
             return services;
         }
-        public static  IApplicationBuilder UseOpenCRM<TDBContext>(this IApplicationBuilder app) where TDBContext : DataContext
+        public static IApplicationBuilder UseOpenCRM<TDBContext>(this IApplicationBuilder app) where TDBContext : DataContext
         {
             if (app == null)
             {
@@ -104,7 +104,7 @@ namespace OpenCRM.Core.Web
             }
             return app;
         }
-       
+
 
     }
 }

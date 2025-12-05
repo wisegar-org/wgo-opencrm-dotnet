@@ -81,6 +81,8 @@ Mantieni sempre questa struttura: non spostare, rinominare o eliminare cartelle 
 - Indicazioni precise su dove posizionare file e classi.
 - Snippet di integrazione con OpenCRM.Core/Core.Web quando necessari.
 - Breve spiegazione delle scelte architetturali.
+- Alla fine di ogni soluzione fai sempre un riasunto di quello che hai proposto.
+- Finisci sempre informandomi su la ora, il tempo che ci hai messo per fare il task e la quantità di tokens che hai utilizzato.
 
 ---
 

@@ -26,6 +26,7 @@ Mantieni sempre questa struttura: non spostare, rinominare o eliminare cartelle 
 - Librerie core: OpenCRM.Core per entita, servizi di base e modelli condivisi; OpenCRM.Core.Web per integrazione ASP.NET Core (startup, middleware, client shared).
 - Moduli backend: OpenCRM.Manager, OpenCRM.Finance, OpenCRM.SwissLPD dipendono da Core/Core.Web e non il contrario.
 - SPA: vive in Modules/OpenCRM.Manager/Client e consuma le API esposte dai moduli backend.
+- Ogni progetto Angular deve utilizzare la libreria di componenti Flowbite per l'UI; assicurati che sia installata e importata in ciascun progetto.
 - Nessuna dipendenza circolare; i moduli non devono referenziare altri moduli se non tramite API.
 
 ---

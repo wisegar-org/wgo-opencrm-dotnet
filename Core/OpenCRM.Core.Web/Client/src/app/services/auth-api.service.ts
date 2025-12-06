@@ -23,6 +23,7 @@ export class AuthApiService {
   }
 
   confirmEmail(query: ConfirmEmailRequest): Observable<ConfirmEmailResponse> {
-    return this.api.get<ConfirmEmailResponse>('auth/confirm-email', query);
+    const params = { userId: query.userId, token: query.token };
+    return this.api.get<ConfirmEmailResponse>('auth/confirm-email', params);
   }
 }

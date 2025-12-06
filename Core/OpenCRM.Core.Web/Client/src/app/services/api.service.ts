@@ -10,7 +10,7 @@ export class ApiService {
 
   constructor(private readonly http: HttpClient) {}
 
-  get<T>(path: string, params?: Record<string, string | number | boolean>): Observable<T> {
+  get<T>(path: string, params?: Record<string, string | number | boolean | null | undefined>): Observable<T> {
     return this.http.get<T>(this.buildUrl(path), { params: this.mapParams(params) });
   }
 
@@ -35,13 +35,16 @@ export class ApiService {
     return `${this.baseUrl}/${sanitizedPath}`;
   }
 
-  private mapParams(params?: Record<string, string | number | boolean>): HttpParams | undefined {
+  private mapParams(params?: Record<string, string | number | boolean | null | undefined>): HttpParams | undefined {
     if (!params) {
       return undefined;
     }
 
     let httpParams = new HttpParams();
     Object.entries(params).forEach(([key, value]) => {
+      if (value === null || value === undefined) {
+        return;
+      }
       httpParams = httpParams.set(key, String(value));
     });
     return httpParams;

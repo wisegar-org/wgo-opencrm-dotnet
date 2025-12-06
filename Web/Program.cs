@@ -1,3 +1,6 @@
+using System.IO;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.FileProviders;
 using OpenCRM.Core.Web;
 using OpenCRM.Web.Data;
 
@@ -34,6 +37,35 @@ app.UseOpenCRM<OpenCRMDataContext>();
 app.UseHttpsRedirection();
 
 app.MapControllers();
+
+// Serve Angular UI from Core/OpenCRM.Core.Web/ui
+var spaRoot = Path.Combine(app.Environment.ContentRootPath, "Core", "OpenCRM.Core.Web", "ui");
+if (Directory.Exists(spaRoot))
+{
+    var spaFileProvider = new PhysicalFileProvider(spaRoot);
+    app.UseDefaultFiles(new DefaultFilesOptions
+    {
+        FileProvider = spaFileProvider
+    });
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = spaFileProvider
+    });
+
+    app.MapFallback(async context =>
+    {
+        var indexFile = spaFileProvider.GetFileInfo("index.html");
+        if (indexFile.Exists)
+        {
+            context.Response.ContentType = "text/html";
+            await context.Response.SendFileAsync(indexFile);
+        }
+        else
+        {
+            context.Response.StatusCode = StatusCodes.Status404NotFound;
+        }
+    });
+}
 
 var summaries = new[]
 {

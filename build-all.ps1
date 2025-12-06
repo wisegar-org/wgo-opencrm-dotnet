@@ -61,9 +61,11 @@ finally {
 Write-Host "Build Web project ($Configuration)..." -ForegroundColor Cyan
 & $dotnetExe.Source build $webProj -c $Configuration
 
-if (-not (Test-Path $publishRoot)) {
-    New-Item -ItemType Directory -Path $publishRoot | Out-Null
+if (Test-Path $publishRoot) {
+    Write-Host "Pulizia cartella publish ($publishRoot)..." -ForegroundColor Cyan
+    Remove-Item -Path $publishRoot -Recurse -Force
 }
+New-Item -ItemType Directory -Path $publishRoot | Out-Null
 
 $rids = @('linux-x64', 'win-x64', 'osx-x64')
 foreach ($rid in $rids) {

@@ -21,23 +21,23 @@ Il progetto pretende fungere da base a diversi moduli di gestione contenuti con 
   - Build default (Release):
 
     ```bash
-      pwsh -ExecutionPolicy Bypass -File ./build-all.ps1
+      powershell -ExecutionPolicy Bypass -File ./build-all.ps1
     ```
 
   - Build Debug:
 
   ```bash
-      pwsh -ExecutionPolicy Bypass -File ./build-all.ps1 -Configuration Debug
+      powershell -ExecutionPolicy Bypass -File ./build-all.ps1 -Configuration Debug
    ```
 
   - Build dopo aver installato le dipendenze npm:
 
   ```bash
-      pwsh -ExecutionPolicy Bypass -File ./build-all.ps1 -InstallNodeDeps
+      powershell -ExecutionPolicy Bypass -File ./build-all.ps1 -InstallNodeDeps
   ```
 
   - Build Debug e install deps:
 
   ```bash
-      pwsh -ExecutionPolicy Bypass -File ./build-all.ps1 -Configuration Debug -InstallNodeDeps
+      powershell -ExecutionPolicy Bypass -File ./build-all.ps1 -Configuration Debug -InstallNodeDeps
   ```

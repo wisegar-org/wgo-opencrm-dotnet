@@ -10,3 +10,6 @@ bin
 /OpenCRM.Web/wwwroot/media
 launchSettings.json
 appsettings.json
+publish
+Core/OpenCRM.Core.Web/ui
+Core/OpenCRM.Core.Web/Client/dist

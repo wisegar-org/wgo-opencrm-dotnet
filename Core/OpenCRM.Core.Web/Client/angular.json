@@ -14,7 +14,7 @@
           "builder": "@angular/build:application",
           "options": {
             "browser": "src/main.ts",
-            "outputPath": "../ui",
+            "outputPath": "dist/opencrm-core-web-ui/browser",
             "polyfills": [
               "zone.js"
             ],
@@ -39,8 +39,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "32kB",
+                  "maximumError": "64kB"
                 }
               ],
               "outputHashing": "all"

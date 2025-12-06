@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+using System;
+using System.IO;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -8,6 +10,7 @@ using OpenCRM.Core.Data;
 using OpenCRM.Core.DataBlock;
 using OpenCRM.Core.Extensions;
 using OpenCRM.Core.QRCode;
+using OpenCRM.Core.Web.Extensions;
 using OpenCRM.Core.Web.Services;
 using OpenCRM.Core.Web.Services.CardBlockService;
 using OpenCRM.Core.Web.Services.EmailService;
@@ -66,17 +69,20 @@ namespace OpenCRM.Core.Web
 
             return services;
         }
-        public static IApplicationBuilder UseOpenCRM<TDBContext>(this IApplicationBuilder app) where TDBContext : DataContext
+        public static WebApplication UseOpenCRM<TDBContext>(this WebApplication app) where TDBContext : DataContext
         {
             if (app == null)
             {
                 throw new ArgumentNullException(nameof(app));
             }
+            var spaRoot = Path.Combine("..", "Core", "OpenCRM.Core.Web", "Client", "dist", "opencrm-core-web-ui", "browser");
+            app.UseSpaProvider(spaRoot, "/manager");
+
             app.UseAuthentication();
 
             app.UseAuthorization();
 
-            using (var scope = app.ApplicationServices.CreateScope())
+            using (var scope = app.Services.CreateScope())
             {
                 //TODO: Use scoped app to use any regitered service before starting up
 
@@ -104,7 +110,5 @@ namespace OpenCRM.Core.Web
             }
             return app;
         }
-
-
     }
 }
